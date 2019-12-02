@@ -7,3 +7,5 @@ close all
 fSector="sector"; % fichero datos sector
 fFP="vuelos"; % fichero datos vuelos
 listaFP=LeerFP(fFP); % da una matriz de FP a partir del fichero datos vuelos
+
+%% SECTION 3: 
