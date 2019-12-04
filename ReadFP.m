@@ -12,4 +12,3 @@ function [listFP ,numFP]= ReadFP(fFP)
     numFP=sizeF(1);
     
 end
-
