@@ -1,18 +1,18 @@
-%% SECTION 1: limpiar lo que tengamos anterior
+%% SECTION 1: clean MATLAB
 clc
 clear all
 close all
 
-%% SECTION 2: leemos sector y vuelos
-fSector="sector"; % fichero datos sector
-fFP="FlightPlans.txt"; % fichero datos vuelos
-[listaFP,Nvuelos]=LeerFP(fFP); % da una matriz de FP a partir del fichero datos vuelos
+%% SECTION 2: read airspace from files (sector + flight plans)
+% fSector="sector"; % data file of sector     ---> NO EXISTE
+% LeerSector(fSector); %      ---> TAMPOCO EXISTE
+fFP="FlightPlans.txt"; % data file of flight plans
+[listFP,numFP]=ReadFP(fFP); 
 
-%% SECTION 3: Generamos población inicial
-Poblacion=100;
-Matriz_poblacion = PoblacionInicial(Nvuelos,Poblacion);
-FP1=listaFP(1,:);
-FP2=listaFP(2,:);
-Conflicto=Conflicto_2FP(5,1,FP1,FP2)
+%% SECTION 3: create initial population
+numInd=100; % # individuals(=chromosomas=solutions)
+numBits=5; % # bits per FP (about our codification)
+population = RandomPopulation(Nvuelos,Poblacion,Nbits);
 
-%% SECTION 4: LOL
+%% SECTION 4: GA loop
+%while(determinar cuándo parar):

@@ -1,7 +1,8 @@
-%% cosa
-function [vel,angle] = decodificar(bits) % da el cambio de velocidad y de ángulo dado un vector de bits (long=5)
+%% Returns the speed and heading changes of a certain FP, given the bits
+
+function [vel,angle] = DecodeBits(bits)
     
-    % 3 primeros bits --> velocidad
+    % speed
     if(bits(2)==0 && bits(3)==0)
         vel=0;
     end
@@ -14,15 +15,15 @@ function [vel,angle] = decodificar(bits) % da el cambio de velocidad y de ángulo
     if(bits(2)==1 && bits(3)==1)
         vel=20;
     end
-    if(bits(1)==1) % signo
+    if(bits(1)==1) % negative
         vel=-vel;
     end
     
-    % 2 últimos bits --> cambio angulo
+    % heading
     if(bits(4)==1 && bits(5)==0)
-        angle=-30; % izquierda
+        angle=-30; % left
     elseif(bits(4)==0 && bits(5)==1)
-        angle=+30; % derecha
+        angle=+30; % right
     else
         angle=0;
     end
