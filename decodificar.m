@@ -1,3 +1,4 @@
+%% cosa
 function [vel,angle] = decodificar(bits) % da el cambio de velocidad y de ángulo dado un vector de bits (long=5)
     
     % 3 primeros bits --> velocidad

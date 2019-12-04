@@ -14,3 +14,5 @@ Matriz_poblacion = PoblacionInicial(Nvuelos,Poblacion);
 FP1=listaFP(1,:);
 FP2=listaFP(2,:);
 Conflicto=Conflicto_2FP(5,1,FP1,FP2)
+
+%% SECTION 4: LOL
