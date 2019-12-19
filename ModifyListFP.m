@@ -1,3 +1,7 @@
+%% modifies each FP on one individual
+    % receives the initial FP of all the individual, the number of flight
+    % plans of each individual and the bits vector that modifies the FPs
+
 function [ListFPm, AllVel,AllAngles,AllDist] = ModifyListFP(ListFPi,numFP,IndBits)
 
     ListFPm=zeros(numFP,5);

@@ -15,18 +15,19 @@ numBits=6; % # bits per FP (about our codification)
 population = RandomPopulation(numFP,numInd,numBits);
 
 %% SECTION 4: GA loop
-SecDistance=8; %NM
-SimTime=5; %seconds
+SecDistance=8; % security distance in NM
+SimTime=5; % time increment in seconds
 PercetageElitism=0.1;
 %while(determinar cuándo parar):    
     FitnessVector=zeros(numInd,1);
     
-    for Chrom=1:1:numInd
-        [ListFPm,AllVel,AllAngles,AllDist] = ModifyListFP(ListFPi,numInd,population(Chrom,:));
+    for Chrom=1:1:numInd % computes the fitness of each individual of the population
+        [ListFPm,AllVel,AllAngles,AllDist] = ModifyListFP(ListFPi,numInd,population(Chrom,:)); 
         numAffected = GetAffected(ListFPi, ListFPm,numFP);
         numConflicts = GetConflicts(ListFPm,SecDistance,SimTime,numFP);
         FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numInd,numFP);
     end
+    
     FitnessVector=sort(FitnessVector);
     numElitism=PercetageElitism*length(FitnessVector);
     Elitism=FitnessVector(1:numElitism,1);

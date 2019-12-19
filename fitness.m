@@ -1,8 +1,12 @@
+%% Computes the fitness of an individual
+
 function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,distance_changes,numInd,numFP)
-    A=0.25;
-    B=0.25;
-    C=0.25;
-    D=0.25;
+    
+    % A + B + C + D = 1 --> Gives weight to each one of the terms
+    A=0.25; % weight of the number of affected aircrafts
+    B=0.25; % weight of the changes on velocity
+    C=0.25; % weight of the changes on heading
+    D=0.25; % weight of the difference in distance inside the sector
 
     %Computing the sum of velocity, heading and distance changes
     for i=1:1:numFP
