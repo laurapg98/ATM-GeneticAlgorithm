@@ -1,5 +1,5 @@
 Xinicial Yinicial Xfinal Yfinal Velocidad
-0 32 74 0 443
-45 80 69 0 458
+0 20 80 20 458
+0 50 80 50 458
 80 13 0 76 466
 80 67 16 0 478

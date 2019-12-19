@@ -20,13 +20,22 @@ function [vel,angle] = DecodeBits(bits)
     end
     
     % heading
-    if(bits(4)==1 && bits(5)==0)
-        angle=-30; % left
-    elseif(bits(4)==0 && bits(5)==1)
-        angle=+30; % right
-    else
+     if(bits(5)==0 && bits(6)==0)
         angle=0;
     end
+    if(bits(5)==0 && bits(6)==1)
+        angle=15;
+    end
+    if(bits(5)==1 && bits(6)==0)
+        angle=30;
+    end
+    if(bits(5)==1 && bits(6)==1)
+       angle=20;
+    end
+    if(bits(4)==1) % negative
+        angle=-angle;
+    end
+    
     
 end
 
