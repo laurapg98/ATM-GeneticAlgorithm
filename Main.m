@@ -35,11 +35,13 @@ numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulet
     
     % FITNESS
     for Chrom=1:1:numInd % computes the fitness of each individual of the population
-        [ListFPm,AllVel,AllAngles,AllDist] = ModifyListFP(ListFPi,numInd,population(Chrom,:)); 
+        [ListFPm,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(Chrom,:)); % Modifies each flight plan according to each solution (individual) 
         numAffected = GetAffected(ListFPi, ListFPm,numFP);
         numConflicts = GetConflicts(ListFPm,SecDistance,SimTime,numFP);
         FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numInd,numFP);
+        Chrom
     end
+    angles = plot_solution(ListFPi,ListFPm)
     
     % NEW POPULATION
     FitnessVector=sort(FitnessVector); 

@@ -8,7 +8,9 @@ function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,dist
     B=0.25; % weight of the changes on velocity
     C=0.25; % weight of the changes on heading
     D=0.25; % weight of the difference in distance inside the sector
-
+    sumVel = 0;
+    sumAng = 0;
+    sumDist = 0;
     %Computing the sum of velocity, heading and distance changes
     for i=1:1:numFP
         sumVel= sumVel+abs(velocity_changes(i));

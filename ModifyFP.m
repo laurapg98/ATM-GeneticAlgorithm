@@ -1,7 +1,7 @@
 %% Given an initial FP and the applied changes, modifies the FP
 
 function [modifiedFP,dist] = ModifyFP(initialFP, ang, vel)
-    ang = (+1)*ang;
+%     ang = (+1)*ang;
     x1 = initialFP(1);
     x2 = initialFP(3);
     y1 = initialFP(2);
