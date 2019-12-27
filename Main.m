@@ -31,22 +31,24 @@ numElitism=PercetageElitism*numInd; % # individuals copied in the new population
 numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulette
 
 %while(determinar cuándo parar):    
-    FitnessVector=zeros(numInd,1);
-    
+
     % FITNESS
+    FitnessVector=zeros(numInd,1);
     for Chrom=1:1:numInd % computes the fitness of each individual of the population
         [ListFPm,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(Chrom,:)); % Modifies each flight plan according to each solution (individual) 
         numAffected = GetAffected(ListFPi, ListFPm,numFP);
         numConflicts = GetConflicts(ListFPm,SecDistance,SimTime,numFP);
         FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numInd,numFP);
-        Chrom
     end
-    angles = plot_solution(ListFPi,ListFPm)
     
     % NEW POPULATION
-    FitnessVector=sort(FitnessVector); 
-    Elitism=FitnessVector(1:numElitism,1);
-    NoElitism=FitnessVector(numElitism+1:numInd,1);
+    FitnessVector_SORTED=sort(FitnessVector); 
+    % 10% elitism:
+    Elitism=FitnessVector_SORTED(1:numElitism,1);
+    NoElitism=FitnessVector_SORTED(numElitism+1:numInd,1);
     
     % MUTATION
+    
+    
+    %angles = plot_solution(ListFPi,ListFPm)
     
