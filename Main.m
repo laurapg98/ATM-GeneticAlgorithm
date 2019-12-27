@@ -56,9 +56,9 @@ numMutated=Pm*numInd; % # individuals that have to mutate
     % FALTA TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     % MUTATION
-    
+    mutatedPopulation = mutation(populationNEW, numInd, numMutated);
 
-    population=populationNEW;
+    population=mutatedPopulation;
 
 %end
 
