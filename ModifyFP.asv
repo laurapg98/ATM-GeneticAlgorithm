@@ -67,14 +67,11 @@ function [modifiedFP,dist] = ModifyFP(initialFP, ang, vel)
     end
     if Point_out == [0;0]
         [row,col] = find(intersections>0 & intersections <100);
-        if col == 1 % intersects with X bottom
-            Point_out = [intersections(col),0];
-        elseif col == 2 % intersects with X top
-            Point_out = [intersections(col),100];
-        elseif col == 3 % intersects with Y right
-            Point_out = [100,intersections(col)];
-        elseif col == 4 % intersects with Y left
-            Point_out = [0,intersections(col)];
+        if col == 1 % 
+            Point_out = [intersections(col),
+        elseif col == 2
+        elseif col == 3
+        elseif col == 4
         end
     end
     

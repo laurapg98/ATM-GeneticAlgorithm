@@ -45,22 +45,22 @@ numMutated=Pm*numInd; % # individuals that have to mutate
     FitnessVector_SORTED=sort(FitnessVector); 
     
     % NEW POPULATION
-    populationNEW=[];
-        % 10% elitism
-    Elitism=FitnessVector_SORTED(1:numElitism,1);
-    for i=1:1:numElitism
-        populationNEW(i,:)=Search_fromFitnessValue(Elitism(i), FitnessVector, population);
-    end
-        % 90% matching by RW
-    NoElitism=FitnessVector_SORTED(numElitism+1:numInd,1);
-    % FALTA TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    
-    % MUTATION
-    mutatedPopulation = mutation(populationNEW, numInd, numMutated);
-
-    population=mutatedPopulation;
+%     populationNEW=[];
+%         % 10% elitism
+%     Elitism=FitnessVector_SORTED(1:numElitism,1);
+%     for i=1:1:numElitism
+%         populationNEW(i,:)=Search_fromFitnessValue(Elitism(i), FitnessVector, population);
+%     end
+%         % 90% matching by RW
+%     NoElitism=FitnessVector_SORTED(numElitism+1:numInd,1);
+%     % FALTA TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+%     
+%     % MUTATION
+%     mutatedPopulation = mutation(populationNEW, numInd, numMutated);
+% 
+%     population=mutatedPopulation;
 
 %end
 
 %% SECTION 5: results
-%angles = plot_solution(ListFPi,ListFPm)    
+angles = plot_solution(ListFPi,ListFPm)    
