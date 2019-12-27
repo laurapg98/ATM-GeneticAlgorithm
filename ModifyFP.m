@@ -30,8 +30,8 @@ function [modifiedFP,dist] = ModifyFP(initialFP, ang, vel)
     intersections = InterX([P1(1) Xsrot; P1(2) Ysrot]);
     
     % Compute the exit point
-    %Point_out=[0 0];
-    Point_out = [];
+    Point_out=[0 0];
+    %Point_out = [];
     i = 1;
     while i <= length(intersections)
         % 1.- It shall be inside the sector boundaries

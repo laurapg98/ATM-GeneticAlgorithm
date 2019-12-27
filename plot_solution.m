@@ -10,7 +10,7 @@ function angles = plot_solution(ListFPi,ListFPm)
     Yright = y*0 + 100;
 
     figure;
-    axis([0 130 0 100])
+    axis([0 150 0 100])
     plot(x,Xtop,'r',x,Xbottom,'r',Yleft,y,'r',Yright,y,'r','LineWidth',2)
     text(105,100,'Green lines: Initial FP');
     text(105,90,'Blue lines: Final FP');
