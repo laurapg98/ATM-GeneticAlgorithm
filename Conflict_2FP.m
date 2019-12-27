@@ -36,5 +36,5 @@ function Conflict = Conflict_2FP(SecDist,SimTime,FP1,FP2)
          end         
          time=time+SimTime;
      end
+     
 end
-

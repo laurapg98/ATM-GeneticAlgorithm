@@ -67,7 +67,7 @@ function [modifiedFP,dist] = ModifyFP(initialFP, ang, vel)
     end
     
     
-    modifiedFP = [P1(1),P1(2),Point_out(1),Point_out(2),vel];
+    modifiedFP = [P1(1),P1(2),Point_out(1),Point_out(2),initialFP(5)+vel];
     dist = sqrt((Point_out(1)-P1(1))^2 + (Point_out(2)-P1(2))^2) - sqrt((P2(1)-P1(1))^2 + (P2(2)-P1(2))^2);
 end
 

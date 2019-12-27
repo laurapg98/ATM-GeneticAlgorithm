@@ -29,6 +29,8 @@ SimTime=5; % time increment in seconds
 PercetageElitism=0.1;
 numElitism=PercetageElitism*numInd; % # individuals copied in the new population
 numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulette
+Pm=0.2; % Probability of mutation
+numMutated=Pm*numInd; % # individuals that have to mutate
 
 %while(determinar cuándo parar):    
 
@@ -40,15 +42,25 @@ numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulet
         numConflicts = GetConflicts(ListFPm,SecDistance,SimTime,numFP);
         FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numInd,numFP);
     end
+    FitnessVector_SORTED=sort(FitnessVector); 
     
     % NEW POPULATION
-    FitnessVector_SORTED=sort(FitnessVector); 
-    % 10% elitism:
+    populationNEW=[];
+        % 10% elitism
     Elitism=FitnessVector_SORTED(1:numElitism,1);
+    for i=1:1:numElitism
+        populationNEW(i,:)=Search_fromFitnessValue(Elitism(i), FitnessVector, population);
+    end
+        % 90% matching by RW
     NoElitism=FitnessVector_SORTED(numElitism+1:numInd,1);
+    % FALTA TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     
     % MUTATION
     
-    
-    %angles = plot_solution(ListFPi,ListFPm)
-    
+
+    population=populationNEW;
+
+%end
+
+%% SECTION 5: results
+%angles = plot_solution(ListFPi,ListFPm)    
