@@ -1,0 +1,7 @@
+Xinicial Yinicial Xfinal Yfinal Velocidad
+0 20 100 20 458
+0 50 100 50 458
+100 13 0 76 466
+100 67 16 0 478
+40 0 50 100 450
+70 0 20 100 470

@@ -1,14 +1,20 @@
 %% Computes the roulette wheel
 
-function sum = RouletteWheel(NoElitism)
+function choice = RouletteWheel(NoElitism)
+    accumulation = cumsum(NoElitism(:,1));
+    accumulated =  accumulation(end);
+    cake = zeros(size(NoElitism,1),1);
     
-    Probabilities=[];
-    sum=0;
-    i=1;
-    while(i<=length(NoElitism))
-        Probabilities(i)=(1/NoElitism(i))/(100/length(NoElitism));
-        sum=sum+Probabilities(i);
-        i=i+1;
+    for index = 1 : size(NoElitism,1)
+        cake(index,1) = (1 - (NoElitism(index,1)/accumulated))/(size(NoElitism,1)-1)*10000;
     end
+    for a=1:1:length(cake)
+        Ruleta(a)=rand()*cake(a);
+        Max=max(Ruleta);
+        if Ruleta(a)==Max
+            index=a;         
+        end
+    end
+    choice = index;
 
 end

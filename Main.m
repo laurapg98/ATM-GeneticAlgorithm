@@ -10,7 +10,8 @@ close all
 % fSector="sector"; % data file of sector     ---> NO EXISTE
 % LeerSector(fSector); %      ---> TAMPOCO EXISTE
 
-fFP="FlightPlans.txt"; % data file of flight plans
+% fFP="FlightPlans.txt"; % data file of flight plans
+fFP="test.txt";
 [ListFPi,numFP]=ReadFP(fFP); 
 
 
@@ -29,10 +30,12 @@ SimTime=5; % time increment in seconds
 PercetageElitism=0.1;
 numElitism=PercetageElitism*numInd; % # individuals copied in the new population
 numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulette
-Pm=0.2; % Probability of mutation
+Pm=0.02; % Probability of mutation
 numMutated=Pm*numInd; % # individuals that have to mutate
+repetitions = 1;
+solutions = zeros(1,1000);
 
-%while(determinar cuándo parar):    
+while(repetitions<=1000)    
 
     % FITNESS
     FitnessVector=zeros(numInd,1);
@@ -42,25 +45,43 @@ numMutated=Pm*numInd; % # individuals that have to mutate
         numConflicts = GetConflicts(ListFPm,SecDistance,SimTime,numFP);
         FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numInd,numFP);
     end
-    FitnessVector_SORTED=sort(FitnessVector); 
+    FitnessVector_Sorted=sort(FitnessVector);
+%   Returns the fitness vector sorted and woth the index of the solution of
+%   the vector fitness vector
+    FitnessVectorSorted_new = index_sort(FitnessVector,FitnessVector_Sorted);
+    Elitism = FitnessVectorSorted_new(1:numElitism,:);
+    NoElitism = FitnessVectorSorted_new(numElitism+1:end,:);
+    populationNEW = zeros(size(population,1),size(population,2));
     
-    % NEW POPULATION
-%     populationNEW=[];
-%         % 10% elitism
-%     Elitism=FitnessVector_SORTED(1:numElitism,1);
-%     for i=1:1:numElitism
-%         populationNEW(i,:)=Search_fromFitnessValue(Elitism(i), FitnessVector, population);
-%     end
-%         % 90% matching by RW
-%     NoElitism=FitnessVector_SORTED(numElitism+1:numInd,1);
-%     % FALTA TODO !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-%     
-%     % MUTATION
-%     mutatedPopulation = mutation(populationNEW, numInd, numMutated);
-% 
-%     population=mutatedPopulation;
+    populationNEW(1:numElitism,:) = population(Elitism(:,2),:);
+    newNoElitism = NoElitism;
+    newPopulationIndex = 11;
+    for u = 1:1:numNoElitism/2
+        choice = RouletteWheel(newNoElitism);
+        solution_1 = population(newNoElitism(choice,2),:);
+        choice = RouletteWheel(newNoElitism);
+        solution_2 = population(newNoElitism(choice,2),:);
+        % CROSSOVER
+        [solution_jr_1,solution_jr_2] = crossover(solution_1,solution_2);
+        
+        
+        
+        populationNEW(newPopulationIndex,:) = solution_jr_1;
+        populationNEW(newPopulationIndex+1,:) = solution_jr_2;
+        newPopulationIndex = newPopulationIndex + 2;
 
-%end
+    end
+    % MUTATION
+    mutatedPopulation = mutation(populationNEW, numInd, numMutated);
+
+    population=mutatedPopulation;
+    solutions(1,repetitions) = FitnessVector_Sorted(1,1);
+    repetitions = repetitions + 1;
+    repetitions
+end
 
 %% SECTION 5: results
-angles = plot_solution(ListFPi,ListFPm)    
+figure;
+x = 1:1:1000;
+plot(x,solutions)
+% angles = plot_solution(ListFPi,ListFPm)    
