@@ -11,7 +11,7 @@ close all
 % LeerSector(fSector); %      ---> TAMPOCO EXISTE
 
 % fFP="FlightPlans.txt"; % data file of flight plans
-fFP="test.txt";
+fFP="FlightPlans.txt";
 [ListFPi,numFP]=ReadFP(fFP); 
 
 
@@ -33,9 +33,7 @@ numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulet
 Pm=0.02; % Probability of mutation
 numMutated=Pm*numInd; % # individuals that have to mutate
 repetitions = 1;
-solutions = zeros(1,1000);
-
-while(repetitions<=1000)    
+while(repetitions<=100)
 
     % FITNESS
     FitnessVector=zeros(numInd,1);
@@ -46,13 +44,13 @@ while(repetitions<=1000)
         FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numInd,numFP);
     end
     FitnessVector_Sorted=sort(FitnessVector);
-%   Returns the fitness vector sorted and woth the index of the solution of
+%   Returns the fitness vector sorted and with the index of the solution of
 %   the vector fitness vector
     FitnessVectorSorted_new = index_sort(FitnessVector,FitnessVector_Sorted);
     Elitism = FitnessVectorSorted_new(1:numElitism,:);
     NoElitism = FitnessVectorSorted_new(numElitism+1:end,:);
     populationNEW = zeros(size(population,1),size(population,2));
-    
+
     populationNEW(1:numElitism,:) = population(Elitism(:,2),:);
     newNoElitism = NoElitism;
     newPopulationIndex = 11;
@@ -63,9 +61,9 @@ while(repetitions<=1000)
         solution_2 = population(newNoElitism(choice,2),:);
         % CROSSOVER
         [solution_jr_1,solution_jr_2] = crossover(solution_1,solution_2);
-        
-        
-        
+
+
+
         populationNEW(newPopulationIndex,:) = solution_jr_1;
         populationNEW(newPopulationIndex+1,:) = solution_jr_2;
         newPopulationIndex = newPopulationIndex + 2;
@@ -76,12 +74,20 @@ while(repetitions<=1000)
 
     population=mutatedPopulation;
     solutions(1,repetitions) = FitnessVector_Sorted(1,1);
+    if repetitions>=26 && solutions(repetitions)==solutions(repetitions-25) %The loop must finish when the lasts 25 values of vector "solution" are the same ones
+        break
+    else
     repetitions = repetitions + 1;
+    end
     repetitions
+   
+
 end
+
+
 
 %% SECTION 5: results
 figure;
-x = 1:1:1000;
+x = 1:1:repetitions;
 plot(x,solutions)
 % angles = plot_solution(ListFPi,ListFPm)    

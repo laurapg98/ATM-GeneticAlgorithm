@@ -7,7 +7,7 @@ function numAffected = GetAffected(listFPi, listFPm,numFP)
     while(nFP<=numFP)
         initialFP=listFPi(nFP,:);
         modifiedFP=listFPm(nFP,:);
-        if(initialFP~=modifiedFP)
+        if (initialFP (3)~=modifiedFP(3) | initialFP(4)~=modifiedFP(4)|initialFP(5)~=modifiedFP(5))
             numAffected=numAffected+1;
         end
         nFP=nFP+1;

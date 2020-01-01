@@ -22,7 +22,7 @@ function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,dist
     if Conflicts <=3
         fit=(A*Affected)+(B*sumVel/numInd)+(C*sumAng/numInd)+(D*sumDist/numInd);
     else
-        fit=inf;
+        fit=100000;
     end
     
 end
