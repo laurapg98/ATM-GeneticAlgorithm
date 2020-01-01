@@ -11,7 +11,7 @@ close all
 % LeerSector(fSector); %      ---> TAMPOCO EXISTE
 
 % fFP="FlightPlans.txt"; % data file of flight plans
-fFP="FlightPlans.txt";
+fFP="test.txt";
 [ListFPi,numFP]=ReadFP(fFP); 
 
 
@@ -74,7 +74,7 @@ while(repetitions<=100)
 
     population=mutatedPopulation;
     solutions(1,repetitions) = FitnessVector_Sorted(1,1);
-    if repetitions>=26 && solutions(repetitions)==solutions(repetitions-25) %The loop must finish when the lasts 25 values of vector "solution" are the same ones
+    if repetitions>=21 && solutions(repetitions)==solutions(repetitions-20) %The loop must finish when the lasts 25 values of vector "solution" are the same ones
         break
     else
     repetitions = repetitions + 1;
