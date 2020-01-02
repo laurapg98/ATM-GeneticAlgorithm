@@ -30,58 +30,60 @@ SimTime=5; % time increment in seconds
 PercetageElitism=0.1;
 numElitism=PercetageElitism*numInd; % # individuals copied in the new population
 numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulette
-Pm=0.02; % Probability of mutation
+Pm=0.01; % Probability of mutation
 numMutated=Pm*numInd; % # individuals that have to mutate
+
 repetitions = 1;
-while(repetitions<=100)
+continuesimulation=true;
+equalresults=0;
+while(continuesimulation==true)
 
     % FITNESS
     FitnessVector=zeros(numInd,1);
-    for Chrom=1:1:numInd % computes the fitness of each individual of the population
+    for Chrom=1:1:numInd 
         [ListFPm,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(Chrom,:)); % Modifies each flight plan according to each solution (individual) 
-        numAffected = GetAffected(ListFPi, ListFPm,numFP);
-        numConflicts = GetConflicts(ListFPm,SecDistance,SimTime,numFP);
-        FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numInd,numFP);
+        numAffected = GetAffected(ListFPi, ListFPm,numFP); % computes the number of affected aircrafts
+        numConflicts = GetConflicts(ListFPm,SecDistance,SimTime,numFP); % computes the number of conflicts between FPs
+        FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numInd,numFP); % computes the fitness of each individual of the population
     end
-    FitnessVector_Sorted=sort(FitnessVector);
-%   Returns the fitness vector sorted and with the index of the solution of
-%   the vector fitness vector
-    FitnessVectorSorted_new = index_sort(FitnessVector,FitnessVector_Sorted);
-    Elitism = FitnessVectorSorted_new(1:numElitism,:);
+    FitnessVector_Sorted=sort(FitnessVector); % fitness values sorted (minimum first)
+    FitnessVectorSorted_new = index_sort(FitnessVector,FitnessVector_Sorted); % fitness value sorted and index of this solution in population matrix
+    
+    % NEW POPULATION
+    Elitism = FitnessVectorSorted_new(1:numElitism,:); 
     NoElitism = FitnessVectorSorted_new(numElitism+1:end,:);
     populationNEW = zeros(size(population,1),size(population,2));
-
-    populationNEW(1:numElitism,:) = population(Elitism(:,2),:);
+    populationNEW(1:numElitism,:) = population(Elitism(:,2),:); % elitist solutions copied
     newNoElitism = NoElitism;
     newPopulationIndex = 11;
     for u = 1:1:numNoElitism/2
-        choice = RouletteWheel(newNoElitism);
+        choice = RouletteWheel(newNoElitism); % random choice 1 
         solution_1 = population(newNoElitism(choice,2),:);
-        choice = RouletteWheel(newNoElitism);
+        choice = RouletteWheel(newNoElitism); % random choice 2
         solution_2 = population(newNoElitism(choice,2),:);
-        % CROSSOVER
-        [solution_jr_1,solution_jr_2] = crossover(solution_1,solution_2);
-
-
-
+        [solution_jr_1,solution_jr_2] = crossover(solution_1,solution_2); % CROSSOVER
         populationNEW(newPopulationIndex,:) = solution_jr_1;
         populationNEW(newPopulationIndex+1,:) = solution_jr_2;
         newPopulationIndex = newPopulationIndex + 2;
 
     end
-    % MUTATION
-    mutatedPopulation = mutation(populationNEW, numInd, numMutated);
-
-    population=mutatedPopulation;
+    mutatedPopulation = mutation(populationNEW, numInd, numMutated); % MUTATION
+    
     solutions(1,repetitions) = FitnessVector_Sorted(1,1);
-    if repetitions>=21 && solutions(repetitions)==solutions(repetitions-20) %The loop must finish when the lasts 25 values of vector "solution" are the same ones
-        break
+    
+    if(repetitions>1 && solutions(1,repetitions-1)==solutions(1,repetitions)) %The loop must finish when the lasts 25 values of vector "solution" are the same ones
+        equalresults=equalresults+1;
     else
-    repetitions = repetitions + 1;
+        equalresults=0;
     end
-    repetitions
-   
-
+    
+    if(equalresults>=100)
+        continuesimulation=false;
+    else
+        repetitions=repetitions+1
+        population=mutatedPopulation;
+    end
+    
 end
 
 
@@ -91,3 +93,21 @@ figure;
 x = 1:1:repetitions;
 plot(x,solutions)
 % angles = plot_solution(ListFPi,ListFPm)    
+
+index_best=FitnessVectorSorted_new(1,2);
+[ListFPm_best,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(index_best,:));
+numAffected = GetAffected(ListFPi, ListFPm_best,numFP)
+numConflicts = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP)
+angles = plot_solution(ListFPi,ListFPm_best)
+
+
+
+
+
+
+
+
+
+
+
+
