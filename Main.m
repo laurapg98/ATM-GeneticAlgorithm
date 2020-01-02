@@ -78,8 +78,21 @@ while(continuesimulation==true)
     end
     
     if(equalresults>=100)
+        index_best=FitnessVectorSorted_new(1,2);
+        [ListFPm_best,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(index_best,:));
+        numAffected = GetAffected(ListFPi, ListFPm_best,numFP);
+        numConflicts = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP);
+        BestAffectedConflict(repetitions,1) = numAffected;
+        BestAffectedConflict(repetitions,2) = numConflicts;
+        
         continuesimulation=false;
     else
+        index_best=FitnessVectorSorted_new(1,2);
+        [ListFPm_best,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(index_best,:));
+        numAffected = GetAffected(ListFPi, ListFPm_best,numFP);
+        numConflicts = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP);
+        BestAffectedConflict(repetitions,1) = numAffected;
+        BestAffectedConflict(repetitions,2) = numConflicts;
         repetitions=repetitions+1
         population=mutatedPopulation;
     end
@@ -89,16 +102,23 @@ end
 
 
 %% SECTION 5: results
-figure;
+figure('NumberTitle', 'off', 'Name', 'Best solution per iteration');
 x = 1:1:repetitions;
 plot(x,solutions)
-% angles = plot_solution(ListFPi,ListFPm)    
+
+figure('NumberTitle', 'off', 'Name', 'Number of conflicts & affected flights per iteration');
+plot(x,BestAffectedConflict(:,1))
+hold on
+plot(x,BestAffectedConflict(:,2))
+legend('Number of affected flights','Number of conflicts')
+hold off
 
 index_best=FitnessVectorSorted_new(1,2);
+
 [ListFPm_best,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(index_best,:));
 numAffected = GetAffected(ListFPi, ListFPm_best,numFP)
 numConflicts = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP)
-angles = plot_solution(ListFPi,ListFPm_best)
+angles = plot_solution(ListFPi,ListFPm_best);
 
 
 

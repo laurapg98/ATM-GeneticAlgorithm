@@ -1,6 +1,6 @@
 %% Plot the sector with the initial and the final flight plans
 
-function angles = plot_solution(ListFPi,ListFPm)
+function realAngles = plot_solution(ListFPi,ListFPm)
     x = linspace(0,100);
     y = linspace(0,100);
     
@@ -9,17 +9,10 @@ function angles = plot_solution(ListFPi,ListFPm)
     Yleft = y*0;
     Yright = y*0 + 100;
 
-    figure;
+    figure('NumberTitle', 'off', 'Name', 'Controlled airspace');
 %     axis([0 300 0 100])
     axis equal
     plot(x,Xtop,'r',x,Xbottom,'r',Yleft,y,'r',Yright,y,'r','LineWidth',2)
-%     text(105,100,'Green lines: Initial FP');
-%     text(105,90,'Blue lines: Final FP');
-%     text(105,80,'Blue points: Final entry & exit points');
-%     dim = [x y w h];
-    
-    
-    
     hold on
     ActualAngles = zeros(size(ListFPi,1),1);
     for pos = 1:1:size(ListFPi,1)
@@ -35,13 +28,13 @@ function angles = plot_solution(ListFPi,ListFPm)
     end
     hold off
     
-    angles = -1.*ActualAngles;
-    figure
-    dim = [.2 .6 .2 .2];
+    realAngles = -1.*ActualAngles;
+    figure('NumberTitle', 'off', 'Name', 'Legend of the airspace','Renderer','painters','OuterPosition',[1390 550 350 360]);
+    dim = [.05 .8 .2 .2];
     annotation('textbox',dim,'String','Green lines: Initial flight plan','FitBoxToText','on');
-    dim = [.2 .5 .2 .2];
+    dim = [.05 .7 .2 .2];
     annotation('textbox',dim,'String','Blue lines: Final flight plan','FitBoxToText','on');
-    dim = [.2 .4 .2 .2];
+    dim = [.05 .6 .2 .2];
     annotation('textbox',dim,'String','Blue asterisks: Final entry & exit points','FitBoxToText','on');
     
 end
