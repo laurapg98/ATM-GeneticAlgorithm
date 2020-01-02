@@ -5,7 +5,7 @@ function mutatedPopulation = mutation(population, numInd, numMutated)
     mutatedPopulation=population;
 
     % individuals to mutate:
-    mutInd=randi([1 numInd],1,numMutated);
+    mutInd=randi([numInd*0.1 numInd],1,numMutated);
 
     % mutate all FP of individuals that are in positions indicated in mutInd 
     for i=1:1:numMutated 

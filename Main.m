@@ -3,8 +3,6 @@
 clc
 clear all
 close all
-
-
 %% SECTION 2: read airspace from files (sector + flight plans)
 
 % fSector="sector"; % data file of sector     ---> NO EXISTE
@@ -79,7 +77,7 @@ while(continuesimulation==true)
     
     if(equalresults>=100)
         index_best=FitnessVectorSorted_new(1,2);
-        [ListFPm_best,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(index_best,:));
+        [ListFPm_best,~,~,~] = ModifyListFP(ListFPi,numFP,population(index_best,:));
         numAffected = GetAffected(ListFPi, ListFPm_best,numFP);
         numConflicts = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP);
         BestAffectedConflict(repetitions,1) = numAffected;
@@ -88,7 +86,7 @@ while(continuesimulation==true)
         continuesimulation=false;
     else
         index_best=FitnessVectorSorted_new(1,2);
-        [ListFPm_best,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(index_best,:));
+        [ListFPm_best,~,~,~] = ModifyListFP(ListFPi,numFP,population(index_best,:));
         numAffected = GetAffected(ListFPi, ListFPm_best,numFP);
         numConflicts = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP);
         BestAffectedConflict(repetitions,1) = numAffected;
