@@ -31,14 +31,17 @@ numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulet
 Pm=0.01; % Probability of mutation
 numMutated=Pm*numInd; % # individuals that have to mutate
 
-repetitions = 1;
+repetitions = 1; % counter of the number of generations of new populations
+equalresults=0; % counter of the number of times in which the best solutions of consecuent populations have the same fitness value
+solutions=[]; % vector of the fitness value of the best individual of each population
+BestAffectedConflict=[]; % matrix of the number of affected FP and the number of conflicts of the best individual of each population
+
 continuesimulation=true;
-equalresults=0;
 while(continuesimulation==true)
 
     % FITNESS
     FitnessVector=zeros(numInd,1);
-    for Chrom=1:1:numInd 
+    for Chrom=1:1:numInd % evaluates each individual in population
         [ListFPm,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(Chrom,:)); % Modifies each flight plan according to each solution (individual) 
         numAffected = GetAffected(ListFPi, ListFPm,numFP); % computes the number of affected aircrafts
         numConflicts = GetConflicts(ListFPm,SecDistance,SimTime,numFP); % computes the number of conflicts between FPs
@@ -48,49 +51,40 @@ while(continuesimulation==true)
     FitnessVectorSorted_new = index_sort(FitnessVector,FitnessVector_Sorted); % fitness value sorted and index of this solution in population matrix
     
     % NEW POPULATION
-    Elitism = FitnessVectorSorted_new(1:numElitism,:); 
-    NoElitism = FitnessVectorSorted_new(numElitism+1:end,:);
     populationNEW = zeros(size(population,1),size(population,2));
+    Elitism = FitnessVectorSorted_new(1:numElitism,:); % 10% better solutions
+    NoElitism = FitnessVectorSorted_new(numElitism+1:end,:); % 90% worst solutions
     populationNEW(1:numElitism,:) = population(Elitism(:,2),:); % elitist solutions copied
-    newNoElitism = NoElitism;
     newPopulationIndex = 11;
     for u = 1:1:numNoElitism/2
-        choice = RouletteWheel(newNoElitism); % random choice 1 
-        solution_1 = population(newNoElitism(choice,2),:);
-        choice = RouletteWheel(newNoElitism); % random choice 2
-        solution_2 = population(newNoElitism(choice,2),:);
-        [solution_jr_1,solution_jr_2] = crossover(solution_1,solution_2); % CROSSOVER
-        populationNEW(newPopulationIndex,:) = solution_jr_1;
+        choice = RouletteWheel(NoElitism); % random choice index 1 
+        solution_1 = population(NoElitism(choice,2),:); % random choice solution 1
+        choice = RouletteWheel(NoElitism); % random choice index 2
+        solution_2 = population(NoElitism(choice,2),:); % random choice solution 2
+        [solution_jr_1,solution_jr_2] = crossover(solution_1,solution_2); % CROSSOVER 
+        populationNEW(newPopulationIndex,:) = solution_jr_1; 
         populationNEW(newPopulationIndex+1,:) = solution_jr_2;
         newPopulationIndex = newPopulationIndex + 2;
-
     end
     mutatedPopulation = mutation(populationNEW, numInd, numMutated); % MUTATION
     
-    solutions(1,repetitions) = FitnessVector_Sorted(1,1);
+    % BEST SOLUTION
+    solutions(1,repetitions) = FitnessVector_Sorted(1,1); % store fitness value in a vector
+    index_best=FitnessVectorSorted_new(1,2); % index 
+    [ListFPm_best,~,~,~] = ModifyListFP(ListFPi,numFP,population(index_best,:)); % modified FP
+    BestAffectedConflict(repetitions,1) = GetAffected(ListFPi, ListFPm_best,numFP); % store number of affected
+    BestAffectedConflict(repetitions,2) = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP); % store number of conflicts
     
-    if(repetitions>1 && solutions(1,repetitions-1)==solutions(1,repetitions)) %The loop must finish when the lasts 25 values of vector "solution" are the same ones
-        equalresults=equalresults+1;
+    % FINISH THE LOOP: when at least 25 populations have the same better fitness value
+    if(repetitions>1 && solutions(1,repetitions-1)==solutions(1,repetitions)) 
+        equalresults=equalresults+1; % count repetitions
     else
         equalresults=0;
     end
     
-    if(equalresults>=100)
-        index_best=FitnessVectorSorted_new(1,2);
-        [ListFPm_best,~,~,~] = ModifyListFP(ListFPi,numFP,population(index_best,:));
-        numAffected = GetAffected(ListFPi, ListFPm_best,numFP);
-        numConflicts = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP);
-        BestAffectedConflict(repetitions,1) = numAffected;
-        BestAffectedConflict(repetitions,2) = numConflicts;
-        
+    if(equalresults>=25) % stop simulation        
         continuesimulation=false;
-    else
-        index_best=FitnessVectorSorted_new(1,2);
-        [ListFPm_best,~,~,~] = ModifyListFP(ListFPi,numFP,population(index_best,:));
-        numAffected = GetAffected(ListFPi, ListFPm_best,numFP);
-        numConflicts = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP);
-        BestAffectedConflict(repetitions,1) = numAffected;
-        BestAffectedConflict(repetitions,2) = numConflicts;
+    else % go on with the simulation
         repetitions=repetitions+1
         population=mutatedPopulation;
     end
