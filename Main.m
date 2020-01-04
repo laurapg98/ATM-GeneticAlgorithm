@@ -3,6 +3,8 @@
 clc
 clear all
 close all
+
+
 %% SECTION 2: read airspace from files (sector + flight plans)
 
 % fSector="sector"; % data file of sector     ---> NO EXISTE
@@ -97,19 +99,19 @@ end
 figure('NumberTitle', 'off', 'Name', 'Best solution per iteration');
 x = 1:1:repetitions;
 plot(x,solutions)
+xlabel("Iteration")
+ylabel("Fitness value")
 
 figure('NumberTitle', 'off', 'Name', 'Number of conflicts & affected flights per iteration');
+subplot(2,1,1)
 plot(x,BestAffectedConflict(:,1))
-hold on
+xlabel("Iteration")
+ylabel("Affected FP")
+subplot(2,1,2)
 plot(x,BestAffectedConflict(:,2))
-legend('Number of affected flights','Number of conflicts')
-hold off
+xlabel("Iteration")
+ylabel("Conflicts between FPs")
 
-index_best=FitnessVectorSorted_new(1,2);
-
-[ListFPm_best,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(index_best,:));
-numAffected = GetAffected(ListFPi, ListFPm_best,numFP)
-numConflicts = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP)
 angles = plot_solution(ListFPi,ListFPm_best);
 
 
