@@ -17,7 +17,7 @@ fFP="test.txt";
 
 %% SECTION 3: create initial population
 
-numInd=100; % # individuals(=chromosomas=solutions)
+numInd=102; % # individuals(=chromosomas=solutions)
 numBits=6; % # bits per FP (about our codification)
 
 population = RandomPopulation(numFP,numInd,numBits);
@@ -28,10 +28,10 @@ population = RandomPopulation(numFP,numInd,numBits);
 SecDistance=8; % security distance in NM
 SimTime=5; % time increment in seconds
 PercetageElitism=0.1;
-numElitism=PercetageElitism*numInd; % # individuals copied in the new population
+numElitism=fix(PercetageElitism*numInd); % # individuals copied in the new population
 numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulette
 Pm=0.01; % Probability of mutation
-numMutated=Pm*numInd; % # individuals that have to mutate
+numMutated=fix(Pm*numInd); % # individuals that have to mutate
 
 repetitions = 1; % counter of the number of generations of new populations
 equalresults=0; % counter of the number of times in which the best solutions of consecuent populations have the same fitness value
@@ -54,19 +54,22 @@ while(continuesimulation==true)
     
     % NEW POPULATION
     populationNEW = zeros(size(population,1),size(population,2));
-    Elitism = FitnessVectorSorted_new(1:numElitism,:); % 10% better solutions
+    Elitism = FitnessVectorSorted_new(1:numElitism,:); % 10% bette r solutions
     NoElitism = FitnessVectorSorted_new(numElitism+1:end,:); % 90% worst solutions
     populationNEW(1:numElitism,:) = population(Elitism(:,2),:); % elitist solutions copied
     newPopulationIndex = 11;
-    for u = 1:1:numNoElitism/2
+    while(newPopulationIndex<numInd)
         choice = RouletteWheel(NoElitism); % random choice index 1 
         solution_1 = population(NoElitism(choice,2),:); % random choice solution 1
         choice = RouletteWheel(NoElitism); % random choice index 2
         solution_2 = population(NoElitism(choice,2),:); % random choice solution 2
         [solution_jr_1,solution_jr_2] = crossover(solution_1,solution_2); % CROSSOVER 
         populationNEW(newPopulationIndex,:) = solution_jr_1; 
-        populationNEW(newPopulationIndex+1,:) = solution_jr_2;
-        newPopulationIndex = newPopulationIndex + 2;
+        newPopulationIndex = newPopulationIndex + 1;
+        if(newPopulationIndex<numInd)
+            populationNEW(newPopulationIndex+1,:) = solution_jr_2;
+            newPopulationIndex = newPopulationIndex + 1;
+        end
     end
     mutatedPopulation = mutation(populationNEW, numInd, numMutated); % MUTATION
     
@@ -96,6 +99,7 @@ end
 
 
 %% SECTION 5: results
+
 figure('NumberTitle', 'off', 'Name', 'Best solution per iteration');
 x = 1:1:repetitions;
 plot(x,solutions)
