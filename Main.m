@@ -10,14 +10,14 @@ close all
 % fSector="sector"; % data file of sector     ---> NO EXISTE
 % LeerSector(fSector); %      ---> TAMPOCO EXISTE
 
-% fFP="FlightPlans.txt"; % data file of flight plans
-fFP="test.txt";
+ fFP="FlightPlans.txt"; % data file of flight plans
+% fFP="test.txt";
 [ListFPi,numFP]=ReadFP(fFP); 
 
 
 %% SECTION 3: create initial population
 
-numInd=102; % # individuals(=chromosomas=solutions)
+numInd=100; % # individuals(=chromosomas=solutions)
 numBits=6; % # bits per FP (about our codification)
 
 population = RandomPopulation(numFP,numInd,numBits);
@@ -37,6 +37,8 @@ repetitions = 1; % counter of the number of generations of new populations
 equalresults=0; % counter of the number of times in which the best solutions of consecuent populations have the same fitness value
 solutions=[]; % vector of the fitness value of the best individual of each population
 BestAffectedConflict=[]; % matrix of the number of affected FP and the number of conflicts of the best individual of each population
+
+best=[];
 
 continuesimulation=true;
 while(continuesimulation==true)
@@ -79,6 +81,7 @@ while(continuesimulation==true)
     [ListFPm_best,~,~,~] = ModifyListFP(ListFPi,numFP,population(index_best,:)); % modified FP
     BestAffectedConflict(repetitions,1) = GetAffected(ListFPi, ListFPm_best,numFP); % store number of affected
     BestAffectedConflict(repetitions,2) = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP); % store number of conflicts
+    best(repetitions,:)=population(index_best,:);
     
     % FINISH THE LOOP: when at least 25 populations have the same better fitness value
     if(repetitions>1 && solutions(1,repetitions-1)==solutions(1,repetitions)) 

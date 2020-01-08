@@ -21,8 +21,9 @@ function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,dist
     end
 
     %Fitness function
-    if Conflicts <= ceil(0.6*numFP)
-        fit=(A*Affected)+(B*sumVel/numInd)+(C*sumAng/numInd)+(D*sumDist/numInd);
+%     if Conflicts <= ceil(0.6*numFP)
+    if Conflicts <= 25
+        fit=Conflicts+(A*Affected)+(B*sumVel/numInd)+(C*sumAng/numInd)+(D*sumDist/numInd);
     else
         fit=100000;
     end
