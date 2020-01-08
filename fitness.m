@@ -1,6 +1,6 @@
 %% Computes the fitness of an individual
 
-function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,distance_changes,numFP)
+function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,distance_changes,numFP,numInd)
     
     % A + B + C + D = 1 --> Give weight to each one of the terms in the
                             % fitness function:

@@ -20,7 +20,7 @@ function realAngles = plot_solution(ListFPi,ListFPm)
         hold on
         plot([ListFPm(pos,1),ListFPm(pos,3)],[ListFPm(pos,2),ListFPm(pos,4)],'b'); % final FP
         hold on
-        plot([ListFPm(pos,1),ListFPm(pos,3)],[ListFPm(pos,2),ListFPm(pos,4)],'b*'); % final entry & exit points
+        plot([ListFPm(pos,1)],[ListFPm(pos,2)],'b*'); % final entry & exit points
         hold on
         m2 = (ListFPm(pos,4)-ListFPm(pos,2))/(ListFPm(pos,3)-ListFPm(pos,1));
         m1 = (ListFPi(pos,4)-ListFPi(pos,2))/(ListFPi(pos,3)-ListFPi(pos,1));

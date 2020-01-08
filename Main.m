@@ -47,7 +47,7 @@ while(continuesimulation==true)
         [ListFPm,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(Chrom,:)); % Modifies each flight plan according to each solution (individual) 
         numAffected = GetAffected(ListFPi, ListFPm,numFP); % computes the number of affected aircrafts
         numConflicts = GetConflicts(ListFPm,SecDistance,SimTime,numFP); % computes the number of conflicts between FPs
-        FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numFP); % computes the fitness of each individual of the population
+        FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numFP,numInd); % computes the fitness of each individual of the population
     end
     FitnessVector_Sorted=sort(FitnessVector); % fitness values sorted (minimum first)
     FitnessVectorSorted_new = index_sort(FitnessVector,FitnessVector_Sorted); % fitness value sorted and index of this solution in population matrix
@@ -117,15 +117,4 @@ xlabel("Iteration")
 ylabel("Conflicts between FPs")
 
 angles = plot_solution(ListFPi,ListFPm_best);
-
-
-
-
-
-
-
-
-
-
-
 
