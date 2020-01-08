@@ -1,6 +1,6 @@
 %% Computes the fitness of an individual
 
-function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,distance_changes,numInd,numFP)
+function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,distance_changes,numFP)
     
     % A + B + C + D = 1 --> Give weight to each one of the terms in the
                             % fitness function:
@@ -8,6 +8,8 @@ function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,dist
     B=0.25; % weight of the changes on velocity
     C=0.25; % weight of the changes on heading
     D=0.25; % weight of the difference in distance inside the sector
+    
+    %Computing the sum of velocity, heading and distance changes
     sumVel = 0;
     sumAng = 0;
     sumDist = 0;
@@ -19,11 +21,11 @@ function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,dist
     end
 
     %Fitness function
-%     if Conflicts <=ceil(0.6*numFP)
-%         fit=(A*Affected)+(B*sumVel/numInd)+(C*sumAng/numInd)+(D*sumDist/numInd);
-%     else
-%         fit=100000;
-%     end
-    fit=(2^Conflicts)+(A*Affected)+(B*sumVel/numFP)+(C*sumAng/numFP)+(D*sumDist/numFP);
+    if Conflicts <= ceil(0.6*numFP)
+        fit=(A*Affected)+(B*sumVel/numInd)+(C*sumAng/numInd)+(D*sumDist/numInd);
+    else
+        fit=100000;
+    end
+
 end
 

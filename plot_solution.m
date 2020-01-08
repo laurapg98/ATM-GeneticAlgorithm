@@ -29,7 +29,7 @@ function realAngles = plot_solution(ListFPi,ListFPm)
     hold off
     
     realAngles = -1.*ActualAngles;
-    figure('NumberTitle', 'off', 'Name', 'Legend of the airspace','Renderer','painters','OuterPosition',[1390 550 350 360]);
+    figure('NumberTitle', 'off', 'Name', 'Legend of the airspace','Renderer','painters');
     dim = [.05 .8 .2 .2];
     annotation('textbox',dim,'String','Green lines: Initial flight plan','FitBoxToText','on');
     dim = [.05 .7 .2 .2];

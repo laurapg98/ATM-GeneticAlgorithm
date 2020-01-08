@@ -3,6 +3,8 @@
 clc
 clear all
 close all
+
+
 %% SECTION 2: read airspace from files (sector + flight plans)
 
 % fSector="sector"; % data file of sector     ---> NO EXISTE
@@ -15,7 +17,7 @@ fFP="test.txt";
 
 %% SECTION 3: create initial population
 
-numInd=100; % # individuals(=chromosomas=solutions)
+numInd=102; % # individuals(=chromosomas=solutions)
 numBits=6; % # bits per FP (about our codification)
 
 population = RandomPopulation(numFP,numInd,numBits);
@@ -26,10 +28,10 @@ population = RandomPopulation(numFP,numInd,numBits);
 SecDistance=8; % security distance in NM
 SimTime=5; % time increment in seconds
 PercetageElitism=0.1;
-numElitism=PercetageElitism*numInd; % # individuals copied in the new population
+numElitism=fix(PercetageElitism*numInd); % # individuals copied in the new population
 numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulette
 Pm=0.01; % Probability of mutation
-numMutated=Pm*numInd; % # individuals that have to mutate
+numMutated=fix(Pm*numInd); % # individuals that have to mutate
 
 repetitions = 1; % counter of the number of generations of new populations
 equalresults=0; % counter of the number of times in which the best solutions of consecuent populations have the same fitness value
@@ -45,26 +47,29 @@ while(continuesimulation==true)
         [ListFPm,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(Chrom,:)); % Modifies each flight plan according to each solution (individual) 
         numAffected = GetAffected(ListFPi, ListFPm,numFP); % computes the number of affected aircrafts
         numConflicts = GetConflicts(ListFPm,SecDistance,SimTime,numFP); % computes the number of conflicts between FPs
-        FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numInd,numFP); % computes the fitness of each individual of the population
+        FitnessVector(Chrom) = fitness(numAffected,numConflicts, AllVel,AllAng,AllDist,numFP); % computes the fitness of each individual of the population
     end
     FitnessVector_Sorted=sort(FitnessVector); % fitness values sorted (minimum first)
     FitnessVectorSorted_new = index_sort(FitnessVector,FitnessVector_Sorted); % fitness value sorted and index of this solution in population matrix
     
     % NEW POPULATION
     populationNEW = zeros(size(population,1),size(population,2));
-    Elitism = FitnessVectorSorted_new(1:numElitism,:); % 10% better solutions
+    Elitism = FitnessVectorSorted_new(1:numElitism,:); % 10% bette r solutions
     NoElitism = FitnessVectorSorted_new(numElitism+1:end,:); % 90% worst solutions
     populationNEW(1:numElitism,:) = population(Elitism(:,2),:); % elitist solutions copied
     newPopulationIndex = 11;
-    for u = 1:1:numNoElitism/2
+    while(newPopulationIndex<numInd)
         choice = RouletteWheel(NoElitism); % random choice index 1 
         solution_1 = population(NoElitism(choice,2),:); % random choice solution 1
         choice = RouletteWheel(NoElitism); % random choice index 2
         solution_2 = population(NoElitism(choice,2),:); % random choice solution 2
         [solution_jr_1,solution_jr_2] = crossover(solution_1,solution_2); % CROSSOVER 
         populationNEW(newPopulationIndex,:) = solution_jr_1; 
-        populationNEW(newPopulationIndex+1,:) = solution_jr_2;
-        newPopulationIndex = newPopulationIndex + 2;
+        newPopulationIndex = newPopulationIndex + 1;
+        if(newPopulationIndex<numInd)
+            populationNEW(newPopulationIndex+1,:) = solution_jr_2;
+            newPopulationIndex = newPopulationIndex + 1;
+        end
     end
     mutatedPopulation = mutation(populationNEW, numInd, numMutated); % MUTATION
     
@@ -94,22 +99,23 @@ end
 
 
 %% SECTION 5: results
+
 figure('NumberTitle', 'off', 'Name', 'Best solution per iteration');
 x = 1:1:repetitions;
 plot(x,solutions)
+xlabel("Iteration")
+ylabel("Fitness value")
 
 figure('NumberTitle', 'off', 'Name', 'Number of conflicts & affected flights per iteration');
+subplot(2,1,1)
 plot(x,BestAffectedConflict(:,1))
-hold on
+xlabel("Iteration")
+ylabel("Affected FP")
+subplot(2,1,2)
 plot(x,BestAffectedConflict(:,2))
-legend('Number of affected flights','Number of conflicts')
-hold off
+xlabel("Iteration")
+ylabel("Conflicts between FPs")
 
-index_best=FitnessVectorSorted_new(1,2);
-
-[ListFPm_best,AllVel,AllAng,AllDist] = ModifyListFP(ListFPi,numFP,population(index_best,:));
-numAffected = GetAffected(ListFPi, ListFPm_best,numFP)
-numConflicts = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP)
 angles = plot_solution(ListFPi,ListFPm_best);
 
 
