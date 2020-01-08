@@ -10,8 +10,8 @@ close all
 % fSector="sector"; % data file of sector     ---> NO EXISTE
 % LeerSector(fSector); %      ---> TAMPOCO EXISTE
 
- fFP="FlightPlans.txt"; % data file of flight plans
-% fFP="test.txt";
+%  fFP="FlightPlans.txt"; % data file of flight plans
+fFP="test.txt";
 [ListFPi,numFP]=ReadFP(fFP); 
 
 
@@ -59,7 +59,7 @@ while(continuesimulation==true)
     Elitism = FitnessVectorSorted_new(1:numElitism,:); % 10% bette r solutions
     NoElitism = FitnessVectorSorted_new(numElitism+1:end,:); % 90% worst solutions
     populationNEW(1:numElitism,:) = population(Elitism(:,2),:); % elitist solutions copied
-    newPopulationIndex = 11;
+    newPopulationIndex = numElitism + 1;
     while(newPopulationIndex<numInd)
         choice = RouletteWheel(NoElitism); % random choice index 1 
         solution_1 = population(NoElitism(choice,2),:); % random choice solution 1
@@ -69,7 +69,7 @@ while(continuesimulation==true)
         populationNEW(newPopulationIndex,:) = solution_jr_1; 
         newPopulationIndex = newPopulationIndex + 1;
         if(newPopulationIndex<numInd)
-            populationNEW(newPopulationIndex+1,:) = solution_jr_2;
+            populationNEW(newPopulationIndex,:) = solution_jr_2;
             newPopulationIndex = newPopulationIndex + 1;
         end
     end
@@ -81,7 +81,7 @@ while(continuesimulation==true)
     [ListFPm_best,~,~,~] = ModifyListFP(ListFPi,numFP,population(index_best,:)); % modified FP
     BestAffectedConflict(repetitions,1) = GetAffected(ListFPi, ListFPm_best,numFP); % store number of affected
     BestAffectedConflict(repetitions,2) = GetConflicts(ListFPm_best,SecDistance,SimTime,numFP); % store number of conflicts
-    best(repetitions,:)=population(index_best,:);
+    best(repetitions,:) = population(index_best,:);
     
     % FINISH THE LOOP: when at least 25 populations have the same better fitness value
     if(repetitions>1 && solutions(1,repetitions-1)==solutions(1,repetitions)) 
