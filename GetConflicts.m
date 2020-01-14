@@ -22,10 +22,7 @@ function Conflicts = GetConflicts(listFPmod,SecDistance,SimTime,numFP)
     end
 
     % save Nconflicts
-%     Conflicts(chrom,1)=Nconflicts;
     Conflicts = Nconflicts;
    
-    
-    
 end
 

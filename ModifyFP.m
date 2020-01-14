@@ -39,32 +39,25 @@ function [modifiedFP,dist] = ModifyFP(initialFP, ang, vel)
             % 2.- It can be one of the initial coordinates
             if i<=2 % intersection with X axis
                 if intersections(i) ~= P1(1) && intersections(i) ~= P1(1)+1 && intersections(i) ~= P1(1)-1
-%                     if intersections(i) ~= P1(1)+1
-%                         if intersections(i) ~= P1(1)-1
                             if i == 1 % Intersection with Xbottom
                                 Point_out = [intersections(i);0];
                             elseif i == 2 % Intersection with Xtop
                                 Point_out = [intersections(i);100];
                             end
-%                         end
-%                     end
                 end
             else % intersection with Y axis
                 if intersections(i) ~= P1(2) && intersections(i) ~= P1(2)+1 && intersections(i) ~= P1(2)-1
-%                     if intersections(i) ~= P1(2)+1 
-%                         if intersections(i) ~= P1(2)-1
                             if i == 3 % Intersection with Yrigth
                                Point_out = [100;intersections(i)];
                            elseif i == 4 % Intersection with Yleft
                                Point_out = [0;intersections(i)];
-                           end
-%                         end
-%                     end
+                            end
                 end
             end
         end
         i = i + 1;
     end
+    
     if Point_out == [0 0]
         [~,col] = find(intersections>0 & intersections <100);
         if col == 1 % intersects with X bottom
@@ -80,5 +73,6 @@ function [modifiedFP,dist] = ModifyFP(initialFP, ang, vel)
     
     modifiedFP = [P1(1),P1(2),Point_out(1),Point_out(2),initialFP(5)+vel];
     dist = sqrt((Point_out(1)-P1(1))^2 + (Point_out(2)-P1(2))^2) - sqrt((P2(1)-P1(1))^2 + (P2(2)-P1(2))^2);
+    
 end
 

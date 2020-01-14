@@ -5,13 +5,9 @@ clear all
 close all
 
 
-%% SECTION 2: read airspace from files (sector + flight plans)
+%% SECTION 2: read airspace from files (flight plans)
 
-% fSector="sector"; % data file of sector     ---> NO EXISTE
-% LeerSector(fSector); %      ---> TAMPOCO EXISTE
-
-%  fFP="FlightPlans.txt"; % data file of flight plans
-fFP="test.txt";
+fFP="FlightPlans.txt"; % data file of flight plans
 [ListFPi,numFP]=ReadFP(fFP); 
 
 
@@ -30,7 +26,7 @@ SimTime=5; % time increment in seconds
 PercetageElitism=0.1;
 numElitism=fix(PercetageElitism*numInd); % # individuals copied in the new population
 numNoElitism=numInd-numElitism; % # individuals that have to enter in the roulette
-Pm=0.01; % Probability of mutation
+Pm=0.02; % Probability of mutation
 numMutated=fix(Pm*numInd); % # individuals that have to mutate
 
 repetitions = 1; % counter of the number of generations of new populations

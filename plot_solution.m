@@ -10,7 +10,6 @@ function realAngles = plot_solution(ListFPi,ListFPm)
     Yright = y*0 + 100;
 
     figure('NumberTitle', 'off', 'Name', 'Controlled airspace');
-%     axis([0 300 0 100])
     axis equal
     plot(x,Xtop,'r',x,Xbottom,'r',Yleft,y,'r',Yright,y,'r','LineWidth',2)
     hold on

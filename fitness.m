@@ -4,9 +4,9 @@ function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,dist
     
     % A + B + C + D = 1 --> Give weight to each one of the terms in the
                             % fitness function:
-    A=0.25; % weight of the number of affected aircrafts
-    B=0.25; % weight of the changes on velocity
-    C=0.25; % weight of the changes on heading
+    A=0.3; % weight of the number of affected aircrafts
+    B=0.225; % weight of the changes on velocity
+    C=0.225; % weight of the changes on heading
     D=0.25; % weight of the difference in distance inside the sector
     
     %Computing the sum of velocity, heading and distance changes
@@ -21,7 +21,6 @@ function fit = fitness(Affected,Conflicts, velocity_changes,heading_changes,dist
     end
 
     %Fitness function
-%     if Conflicts <= ceil(0.6*numFP)
     if Conflicts <= 25
         fit=Conflicts+(A*Affected)+(B*sumVel/numInd)+(C*sumAng/numInd)+(D*sumDist/numInd);
     else

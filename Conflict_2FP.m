@@ -24,7 +24,7 @@ function Conflict = Conflict_2FP(SecDist,SimTime,FP1,FP2)
      Conflict=false;
      
      time=SimTime;
-     while (time<=At && Conflict==false)
+     while (time<=At && Conflict==false) % simulation
          DistFP=sqrt(((X2-X1)^2) +((Y2-Y1)^2));
          if DistFP<=SecDist
              Conflict=true;

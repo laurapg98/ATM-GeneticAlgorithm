@@ -1,6 +1,7 @@
 %% Computes the roulette wheel
 
 function choice = RouletteWheel(NoElitism)
+
     accumulation = cumsum(NoElitism(:,1));
     accumulated =  accumulation(end);
     cake = zeros(size(NoElitism,1),1);

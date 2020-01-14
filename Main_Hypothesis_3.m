@@ -59,10 +59,8 @@ while(continuesimulation==true)
     while(newPopulationIndex<numInd)
         % TEST HIPOTHESIS 3: alternate the state of the comment of lines
         % 62, 63, 65 and 66.
-%         choice = RouletteWheel(NoElitism); % random choice index 1
         choice=randi([1 size(NoElitism,1)],1,1);
         solution_1 = population(NoElitism(choice,2),:); % random choice solution 1
-%         choice = RouletteWheel(NoElitism); % random choice index 2
         choice=randi([1 size(NoElitism,1)],1,1);
         solution_2 = population(NoElitism(choice,2),:); % random choice solution 2
         [solution_jr_1,solution_jr_2] = crossover(solution_1,solution_2); % CROSSOVER 
